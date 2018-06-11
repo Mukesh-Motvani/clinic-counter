@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D3D3D3">
+
+    <include
+        android:id="@+id/includeToolbar"
+        layout="@layout/toolbar">
+
+    </include>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/includeToolbar"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:text="Appointment Detail"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="-100dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="8dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:id="@+id/mainLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:id="@+id/scrollLin"
+                            android:visibility="visible"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:paddingLeft="5dp"
+                                android:paddingRight="5dp"
+                                android:textColor="#000000"
+                                android:text="Welcome Mr. Mukesh Motvani"
+                                android:textSize="18sp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp"
+                                android:orientation="horizontal"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:visibility="gone"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:id="@+id/txtAppId"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.50"
+                                    android:text="appointment Id:"
+                                    android:textColor="#000000"
+                                    android:textSize="15sp" />
+
+                                <TextView
+                                    android:id="@+id/appIdTxt"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.50"
+                                    android:text="6546435784354"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:orientation="horizontal"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:id="@+id/txtDocName"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.50"
+                                    android:text="Doctor's name:"
+                                    android:textColor="#000000"
+                                    android:textSize="15sp" />
+
+                                <TextView
+                                    android:id="@+id/txtDocNameValue"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.50"
+                                    android:text="Dr.Nishikant Pandey"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:orientation="horizontal"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:id="@+id/txtWardNo"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.50"
+                                    android:text="Room No:"
+                                    android:textColor="#000000"
+                                    android:textSize="15sp" />
+
+                                <TextView
+                                    android:id="@+id/txtWardNoValue"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.50"
+                                    android:text="D4 (Ground Floor)"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:orientation="horizontal"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:id="@+id/txtYourNo"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.50"
+                                    android:text="Your No:"
+                                    android:textColor="#000000"
+                                    android:textSize="15sp" />
+
+                                <TextView
+                                    android:id="@+id/txtYourNOValue"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.50"
+                                    android:text="17"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:orientation="horizontal"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:id="@+id/txtCurrentNo"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.50"
+                                    android:text="Current No:"
+                                    android:textColor="#000000"
+                                    android:textSize="15sp" />
+
+                                <TextView
+                                    android:id="@+id/txtCurrentNoValue"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.50"
+                                    android:text="11"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:orientation="horizontal"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                android:weightSum="1">
+
+                                <TextView
+                                    android:id="@+id/txtDocStatus"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.50"
+                                    android:text="Doctor Status:"
+                                    android:textColor="#000000"
+                                    android:textSize="15sp" />
+
+                                <TextView
+                                    android:id="@+id/txtDocStatusValue"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.50"
+                                    android:text="Left For Today"
+                                    android:textColor="@color/buttonColor"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+
+                            <TextView
+                                android:id="@+id/textWait"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="40dp"
+                                android:gravity="center"
+                                android:text="Please wait, Your Turn Comes in.."
+                                android:textColor="#000000"
+                                android:textSize="12sp" />
+
+                            <cn.iwgang.countdownview.CountdownView
+                                android:id="@+id/cv_countdownViewTest22"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginBottom="15dp"
+                                android:layout_marginTop="5dp"
+                                app:isShowDay="false"
+                                app:isShowHour="true"
+                                app:isShowMillisecond="false"
+                                app:isShowMinute="true"
+                                app:isShowSecond="true"
+                                app:suffixGravity="bottom"
+                                app:suffixHour="h"
+                                app:suffixHourLeftMargin="5dp"
+                                app:suffixHourRightMargin="10dp"
+                                app:suffixMinute="m"
+                                app:suffixMinuteLeftMargin="5dp"
+                                app:suffixMinuteRightMargin="10dp"
+                                app:suffixSecond="s"
+                                app:suffixSecondLeftMargin="5dp"
+                                app:suffixTextColor="#444444"
+                                app:suffixTextSize="18sp"
+                                app:timeTextColor="#444444"
+                                app:timeTextSize="40sp" />
+                        </LinearLayout>
+                        <TextView
+                            android:layout_below="@+id/scrollLin"
+                            android:id="@+id/txtNote"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginTop="50dp"
+                            android:padding="10dp"
+                            android:text="note: Time will be calculated based on patients problem, it may very in case of emergency or natural disaster."
+                            android:textColor="@android:color/holo_red_dark"
+                            android:visibility="visible"
+                            android:textSize="13sp" />
+
+
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </ScrollView>
+            <LinearLayout
+                android:id="@+id/errorlayout"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/errortext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:text="Opps..!!Somthing Went Wrong."
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:layout_centerInParent="true"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</RelativeLayout>

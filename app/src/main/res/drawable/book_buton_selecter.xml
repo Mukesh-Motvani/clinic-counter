@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape>
+            <gradient
+                android:startColor="#185390"
+                android:endColor="#185390"
+                android:angle="180" />
+
+
+        </shape>
+    </item>
+    <item >
+        <shape>
+            <gradient
+                android:startColor="@color/rayna_btn_color"
+                android:endColor="@color/rayna_btn_color"
+                android:angle="180" />
+        </shape>
+    </item>
+</selector>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00B9Cd</color>
+    <color name="colorPrimaryDark">#00B9Cd</color>
+    <color name="colorAccent">#00B9Cd</color>
+    <color name="textColorDark">#333333</color>
+    <color name="textColorMed">#555555</color>
+    <color name="textColorFaint">#999999</color>
+    <color name="background">#00B9Cd</color>
+    <color name="white">#ffffff</color>
+    <color name="cancel">#ff6666</color>
+    <color name="confirm">#39ac39</color>
+    <color name="rayna_btn_color">@color/colorPrimary</color>
+    <color name="green">#8FA029</color>
+    <color name="colorGreen">#7CB13F</color>
+    <color name="buttonColor">#7E8ABE</color>
+</resources>

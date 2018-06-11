@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linMain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="70dp"
+            android:src="@drawable/ic_account_balance_black_24dp" />
+
+        <RelativeLayout
+            android:id="@+id/layMainSccanner"
+            android:layout_width="@dimen/height360dp"
+            android:layout_height="@dimen/weight20dp"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/twohundredFiftyDP"
+                android:layout_marginLeft="@dimen/tweentyDP"
+                android:layout_marginRight="@dimen/tweentyDP"
+                android:scaleType="fitXY"
+                android:src="@drawable/scanner_black" />
+
+
+            <RelativeLayout
+                android:id="@+id/layBarcode"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true">
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animation_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/twohundredFiftyDP"
+                    android:layout_alignParentTop="true"
+                    android:layout_gravity="center"
+                    app:lottie_autoPlay="true"
+                    app:lottie_fileName="scan_qr_code_success.json"
+                    app:lottie_loop="false" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textScan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layMainSccanner"
+            android:layout_marginTop="@dimen/tweentyDP"
+            android:gravity="center"
+            android:padding="@dimen/fifteenDP"
+            android:text="Press to Scan and Get your \n Appointment details."
+            android:textColor="#000000"
+            android:textSize="@dimen/text16sp" />
+
+
+        <Button
+            android:id="@+id/btnMainScanYourBarcode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_alignParentBottom="true"
+            android:background="@color/buttonColor"
+            android:padding="@dimen/tenDP"
+            android:text="Scan Your QRcode"
+            android:textColor="@color/white" />
+
+        <LinearLayout
+            android:id="@+id/layButton"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/btnMainScanYourBarcodeNew"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:layout_weight="1"
+                android:background="@color/buttonColor"
+                android:padding="@dimen/fiveDP"
+                android:text="Scan QRcode"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btnCurrentStack"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/buttonColor"
+                android:padding="@dimen/fiveDP"
+                android:text="Last Status"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>
