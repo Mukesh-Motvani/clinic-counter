@@ -212,7 +212,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.50"
-                                    android:text="11"
+                                    android:text="-"
                                     android:textSize="14sp" />
                             </LinearLayout>
 
@@ -239,7 +239,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.50"
-                                    android:text="Left For Today"
+                                    android:text="-"
                                     android:textColor="@color/buttonColor"
                                     android:textSize="14sp" />
                             </LinearLayout>
@@ -251,7 +251,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="40dp"
                                 android:gravity="center"
-                                android:text="Please wait, Your Turn Comes in.."
+                                android:text="Please wait...."
                                 android:textColor="#000000"
                                 android:textSize="12sp" />
 
@@ -279,6 +279,7 @@
                                 app:suffixTextColor="#444444"
                                 app:suffixTextSize="18sp"
                                 app:timeTextColor="#444444"
+                                android:visibility="invisible"
                                 app:timeTextSize="40sp" />
                         </LinearLayout>
                         <TextView
@@ -290,7 +291,7 @@
                             android:layout_marginTop="50dp"
                             android:padding="10dp"
                             android:text="note: Time will be calculated based on patients problem, it may very in case of emergency or natural disaster."
-                            android:textColor="@android:color/holo_red_dark"
+                            android:textColor="#f44336"
                             android:visibility="visible"
                             android:textSize="13sp" />
 
@@ -312,7 +313,7 @@
                         android:id="@+id/errortext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/holo_red_dark"
+                        android:textColor="#f44336"
                         android:text="Opps..!!Somthing Went Wrong."
                         android:textSize="16sp"
                         android:gravity="center"

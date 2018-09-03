@@ -62,14 +62,14 @@ public class ActivitySplash extends AppCompatActivity {
             switch (setterGeneralClass.getData().get(i).getOptionName()) {
 
                 case "site_logo":
-
+                    ModelSiteOption.getInstance().setMainLogo(setterGeneralClass.getData().get(i).getOptionVal());
                     break;
 
                 case "site_domain":
                     ModelSiteOption.getInstance().setDomainPath(setterGeneralClass.getData().get(i).getOptionVal());
                     break;
                 case "default_logo_path":
-                    ModelSiteOption.getInstance().setDomainPath(setterGeneralClass.getData().get(i).getOptionVal());
+                    ModelSiteOption.getInstance().setDefaultLogoUrl(setterGeneralClass.getData().get(i).getOptionVal());
                     break;
 
                 case "thank_you_message":
@@ -88,6 +88,14 @@ public class ActivitySplash extends AppCompatActivity {
                     ModelSiteOption.getInstance().setAppOver(setterGeneralClass.getData().get(i).getOptionVal());
                     break;
 
+                case "support_contact":
+                    ModelSiteOption.getInstance().setSupportNumber(setterGeneralClass.getData().get(i).getOptionVal());
+                    break;
+
+                case "support_email":
+                    ModelSiteOption.getInstance().setSupportEmail(setterGeneralClass.getData().get(i).getOptionVal());
+                    break;
+
             }
 
             if (setterGeneralClass.getData().get(i).getOptionName().equalsIgnoreCase("site_logo")) {
@@ -95,7 +103,6 @@ public class ActivitySplash extends AppCompatActivity {
             }
 
         }
-
 
     }
 
@@ -116,8 +123,8 @@ public class ActivitySplash extends AppCompatActivity {
                         if (setterGeneralClass.getData().get(i).getOptionName().equalsIgnoreCase("site_logo")) {
                             Log.d("image URL =", setterGeneralClass.getData().get(i).getOptionVal());
                             ClinicPref.getInstance(ActivitySplash.this).setMainLogo(setterGeneralClass.getData().get(i).getOptionVal());
-                            Picasso.get().load("http://www.malpaniground.com:8080/global/images/logo/" + setterGeneralClass.getData().get(i).getOptionVal()).into(logoImage);
-                            Log.d("test", "http://www.malpaniground.com:8080/global/images/logo/" + setterGeneralClass.getData().get(i).getOptionVal());
+                            Picasso.get().load(/*"http://www.malpaniground.com:8080/global/images/logo/"*/ ModelSiteOption.getInstance().getDomainPath()+"/global/images/logo/"+ setterGeneralClass.getData().get(i).getOptionVal()).into(logoImage);
+                            Log.d("test", ModelSiteOption.getInstance().getDomainPath()+"/global/images/logo/"+ setterGeneralClass.getData().get(i).getOptionVal());
                         }
                     }
                 } catch (JSONException e) {

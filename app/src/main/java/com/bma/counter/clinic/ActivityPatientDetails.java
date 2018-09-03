@@ -1,53 +1,41 @@
 package com.bma.counter.clinic;
 
+
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
+
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
-import android.widget.Button;
+
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bma.counter.clinic.appSingletone.ModelSiteOption;
 import com.bma.counter.clinic.fonts.Fonts;
 import com.bma.counter.clinic.preference.ClinicPref;
 import com.bma.counter.clinic.service.ThreadGetResponsePost;
 import com.bma.counter.clinic.setters.MainDetailPojo;
 import com.bma.counter.clinic.setters.PatientDetailResposnsePojo;
-import com.bma.counter.clinic.setters.Payload;
 import com.bma.counter.clinic.setters.SetterAppointmentResponse;
-import com.bma.counter.clinic.utils.ClinicConstants;
-import com.bma.counter.clinic.utils.UtisClinicCounter;
-import com.fujiyuu75.sequent.Animation;
-import com.fujiyuu75.sequent.Direction;
-import com.fujiyuu75.sequent.Sequent;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import cn.iwgang.countdownview.CountdownView;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
+
 
 public class ActivityPatientDetails extends AppCompatActivity implements View.OnClickListener {
 
@@ -66,6 +54,7 @@ public class ActivityPatientDetails extends AppCompatActivity implements View.On
     private boolean isStop = false;
     private static Integer currentCount;
     private static int serviceCount;
+    private static long priviousTime;
     private static boolean isAvgTym;
 
     @Override
@@ -78,8 +67,10 @@ public class ActivityPatientDetails extends AppCompatActivity implements View.On
         inItVIews();
         getJsonData();
         requestForCount();
+        ClinicPref.getInstance(this).setTotalServiceCall(0);
         serviceCount = 0;
         currentCount = 0;
+        ClinicPref.getInstance(this).setScreenlog(1);
 
     }
 
@@ -102,10 +93,18 @@ public class ActivityPatientDetails extends AppCompatActivity implements View.On
 
     private void callServiceAppointment() {
         String currentDateandTime = sdf.format(new Date());
+
         String mPayload = "appointment=" + ClinicPref.getInstance(ActivityPatientDetails.this).getjwToken() + "&" + "deviceTime=" + currentDateandTime;
         Log.d("testNew", "appointment:" + jwt + "\n" + "deviceTime:" + currentDateandTime);
-        new ThreadGetResponsePost(ActivityPatientDetails.this, new HandlerAppointmentDetail(), "http://www.malpaniground.com:8080/api/appointment-stats", mPayload).execute();
+        new ThreadGetResponsePost(ActivityPatientDetails.this, new HandlerAppointmentDetail(), /*"http://www.malpaniground.com:8080*/ModelSiteOption.getInstance().getDomainPath() + "/api/appointment-stats", mPayload).execute();
         //Log.d("test",new Gson().toJson(payload));
+    }
+
+    public void sendnotificationData(){
+
+        String notiPaylod = "deviceId="+ClinicPref.getInstance(this).getNotificationToken();
+        Log.d("test",notiPaylod);
+        new ThreadGetResponsePost(ActivityPatientDetails.this,new HandlerNoti(),ModelSiteOption.getInstance().getDomainPath() + "/api/notification/send", notiPaylod ).execute();
     }
 
     private void getJsonData() {
@@ -118,7 +117,7 @@ public class ActivityPatientDetails extends AppCompatActivity implements View.On
         String patientDetail = setterMainPatientDetail.getData();
         setterDetailPatient = gson.fromJson(patientDetail, MainDetailPojo.class);
         setData();
-        callServiceAppointment();
+        // callServiceAppointment();
         //  }
     }
 
@@ -128,6 +127,7 @@ public class ActivityPatientDetails extends AppCompatActivity implements View.On
         txtDocNameValue.setText(setterDetailPatient.getDoctorName());
         txtWardNoValue.setText(setterDetailPatient.getClinicRoomNumber());
         txtYourNOValue.setText(String.valueOf(setterDetailPatient.getCurrQueueCount()));
+        currentCount = setterDetailPatient.getCurrQueueCount();
     }
 
 
@@ -194,16 +194,40 @@ public class ActivityPatientDetails extends AppCompatActivity implements View.On
     }
 
 
+    public void open() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        alertDialogBuilder.setMessage("Do you really want to close this app?");
+        alertDialogBuilder.setPositiveButton("yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        arg0.dismiss();
+                        finish();
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
             case R.id.toobBarRefresh:
-                imgRefresh.setRotation((float)+360.0);
+                imgRefresh.setRotation((float) +360.0);
                 callServiceAppointment();
                 break;
             case R.id.toolbarClose:
-                finish();
+                open();
                 break;
             case R.id.toolBarHome:
                 Intent i = new Intent(ActivityPatientDetails.this, MainActivity.class);
@@ -218,7 +242,19 @@ public class ActivityPatientDetails extends AppCompatActivity implements View.On
     }
 
 
+    public class HandlerNoti extends Handler{
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String response = (String) msg.obj;
+            Log.d("test",response);
+        }
+
+    }
+
     public class HandlerAppointmentDetail extends Handler {
+        long diffIntimenew;
+        long totalWaitingTime;
 
         @Override
         public void handleMessage(Message msg) {
@@ -229,53 +265,138 @@ public class ActivityPatientDetails extends AppCompatActivity implements View.On
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     SetterAppointmentResponse setterAppointmentResponse = new Gson().fromJson(jsonObject.toString(), SetterAppointmentResponse.class);
-
                     if (setterAppointmentResponse.getOkay()) {
+                        ClinicPref.getInstance(ActivityPatientDetails.this).setPriviousStatus(setterAppointmentResponse.getData().getDoctorStatus());
 
-                        Date remainingTym = sdf.parse(setterAppointmentResponse.getData().getApproxAppointmentTime().toString());
+                        //  Date remainingTym = sdf.parse(setterAppointmentResponse.getData().getApproxAppointmentTime().toString());
                         Date currentDate = sdf.parse(sdf.format(new Date()));
-                        long diffBtTime = remainingTym.getTime() - currentDate.getTime();
-                        Log.d("test TYM DIFF", "" + diffBtTime);
+                        long currentTime = System.currentTimeMillis() % 1000;
+                        // As per Logic
 
-                        if (setterAppointmentResponse.getData().getCurrQueueCount() != 0) {
-                            if (serviceCount == 0) {
-                                mCvCountdownViewTest22.start(diffBtTime);
-                            } else {
-                                if (currentCount == setterAppointmentResponse.getData().getCurrQueueCount()) {
+
+                        //long diffBtTime = remainingTym.getTime() - currentDate.getTime();
+
+                        long avgTime = setterAppointmentResponse.getData().getAvgTime() * 60 * 1000;
+                        long extraTime = setterAppointmentResponse.getData().getExtraTime() * 60 * 1000;
+                        long pauseTime = setterAppointmentResponse.getData().getPauseTime() * 60 * 1000;
+
+
+                        if (setterAppointmentResponse.getData().getCurrPatientInTime() > setterAppointmentResponse.getData().getAvgTime()) {
+                            totalWaitingTime = (setterAppointmentResponse.getData().getAvgTime() + setterAppointmentResponse.getData().getExtraTime() + setterAppointmentResponse.getData().getPauseTime()) * 60 * 1000 + 5;
+                        } else {
+                            totalWaitingTime = (setterAppointmentResponse.getData().getAvgTime() + setterAppointmentResponse.getData().getExtraTime() + setterAppointmentResponse.getData().getPauseTime()) * 60 * 1000;
+                        }
+
+                        long diffBtTime = totalWaitingTime + currentTime;
+                        Log.d("test TYM DIFF", "" + diffBtTime);
+                        diffIntimenew = (setterDetailPatient.getCurrQueueCount() - setterAppointmentResponse.getData().getCurrQueueCount()) * diffBtTime;
+
+                        long diffInTimeWithoutPause;
+                        diffInTimeWithoutPause = (avgTime + extraTime) * (setterDetailPatient.getCurrQueueCount() - setterAppointmentResponse.getData().getCurrQueueCount());
+
+                        if (pauseTime > 0) {
+                            diffInTimeWithoutPause = diffInTimeWithoutPause + pauseTime;
+                        }
+                        if (extraTime > 0) {
+                            diffInTimeWithoutPause = diffInTimeWithoutPause + pauseTime;
+                        }
+
+                        if (setterAppointmentResponse.getData().getCurrPatientInTime() > setterAppointmentResponse.getData().getAvgTime()) {
+                            diffInTimeWithoutPause = diffInTimeWithoutPause + 5;
+                        }
+
+
+                        if (!setterAppointmentResponse.getData().getDoctorStatus().equalsIgnoreCase("Left for Today")) {
+                            if (setterAppointmentResponse.getData().getCurrQueueCount() != 0) {
+                                mCvCountdownViewTest22.setVisibility(View.VISIBLE);
+                                textWait.setText("Please wait, Your Turn Comes in..");
+                                //mCvCountdownViewTest22.start(diffBtTime);
+                                if (diffIntimenew > 0) {
+                                    if (ClinicPref.getInstance(ActivityPatientDetails.this).getTotalServiceCall() == 0) {
+
+                                        mCvCountdownViewTest22.start(diffInTimeWithoutPause);
+                                        priviousTime = totalWaitingTime;
+                                        ClinicPref.getInstance(ActivityPatientDetails.this).setPriviousWaitingTime(totalWaitingTime);
+                                    } else {
+                                        if (ClinicPref.getInstance(ActivityPatientDetails.this).getPriviousWaitingTime() != totalWaitingTime || ClinicPref.getInstance(ActivityPatientDetails.this).getLastpatientcount() != setterAppointmentResponse.getData().getCurrQueueCount()) {
+                                            mCvCountdownViewTest22.start(diffInTimeWithoutPause);
+                                            priviousTime = totalWaitingTime;
+                                            ClinicPref.getInstance(ActivityPatientDetails.this).setPriviousWaitingTime(totalWaitingTime);
+                                        } else {
+                                            priviousTime = totalWaitingTime;
+                                            ClinicPref.getInstance(ActivityPatientDetails.this).setPriviousWaitingTime(totalWaitingTime);
+                                        }
+                                    }
+
+                                    /*if(mCvCountdownViewTest22.getRemainTime()< avgTime){
+                                        mCvCountdownViewTest22.start(mCvCountdownViewTest22.getRemainTime()+ (5*60*1000));
+                                    }*/
+
+                                    if (ClinicPref.getInstance(ActivityPatientDetails.this).getPreviousWaitingCount() != 0) {
+                                        if (mCvCountdownViewTest22.getRemainTime() < (diffInTimeWithoutPause - avgTime) && setterAppointmentResponse.getData().getCurrQueueCount() == ClinicPref.getInstance(ActivityPatientDetails.this).getPreviousWaitingCount()) {
+                                            mCvCountdownViewTest22.start(mCvCountdownViewTest22.getRemainTime() + (5 * 60 * 1000));
+                                        }
+                                    }
+                                }
+
+                                //new changes
+                               /* if (currentCount == setterAppointmentResponse.getData().getCurrQueueCount()) {
                                     if (mCvCountdownViewTest22.getRemainTime() < 2000) {
                                         mCvCountdownViewTest22.start(diffBtTime);
                                     }
                                 } else {
-                                    if (currentCount != setterAppointmentResponse.getData().getCurrQueueCount() || isAvgTym != setterAppointmentResponse.getData().getAvgTimeSet()) {
+                                    if (currentCount != setterAppointmentResponse.getData().getCurrQueueCount() || isAvgTym != setterAppointmentResponse.getData().getAvgTimeSet() || setterAppointmentResponse.getData().getDoctorStatus().equalsIgnoreCase("on break") || setterAppointmentResponse.getData().getPatientInTimeMoreThanAvgWaitTime()) {
                                         mCvCountdownViewTest22.start(diffBtTime);
                                     }
-                                }
+
+                                    if (!ClinicPref.getInstance(ActivityPatientDetails.this).getPriviousStatus().equalsIgnoreCase(setterAppointmentResponse.getData().getDoctorStatus())) {
+                                        mCvCountdownViewTest22.start(diffBtTime);
+                                    }
+                                    // }
+                                }*/
+                            } else {
+                                mCvCountdownViewTest22.setVisibility(View.INVISIBLE);
+                                textWait.setText("Please Wait...!");
                             }
                         } else {
                             mCvCountdownViewTest22.setVisibility(View.INVISIBLE);
-                            textWait.setText("Please Wait...!");
+                            textWait.setText("Doctor left for today..!");
                         }
                         serviceCount++;
+                        ClinicPref.getInstance(ActivityPatientDetails.this).setTotalServiceCall(1);
+                        ClinicPref.getInstance(ActivityPatientDetails.this).setLastpatientcount(setterAppointmentResponse.getData().getCurrQueueCount());
                         //  mCvCountdownViewTest22.start(diffBtTime);
                         txtCurrentValue.setText("" + setterAppointmentResponse.getData().getCurrQueueCount());
                         txtDocStatusValue.setText(setterAppointmentResponse.getData().getDoctorStatus());
-                        if (setterDetailPatient.getCurrQueueCount() - setterAppointmentResponse.getData().getCurrQueueCount() == 1) {
-                            mCvCountdownViewTest22.setVisibility(View.INVISIBLE);
-                            if (setterAppointmentResponse.getData().getCurrQueueCount() != 0) {
-                                textWait.setText("Please, be Ready You are Next...");
-                                textWait.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                                textWait.setTextColor(ContextCompat.getColor(ActivityPatientDetails.this, R.color.colorAccent));
-                            } else {
-                                textWait.setText("Please Wait...!!");
+                        if (!setterAppointmentResponse.getData().getDoctorStatus().equalsIgnoreCase("Logged Out")) {
+                            if (setterDetailPatient.getCurrQueueCount() - setterAppointmentResponse.getData().getCurrQueueCount() == 1) {
+                                mCvCountdownViewTest22.setVisibility(View.INVISIBLE);
+                                if (setterAppointmentResponse.getData().getCurrQueueCount() != 0) {
+                                    if(ClinicPref.getInstance(ActivityPatientDetails.this).getNotificationCount() == 0){
+                                        sendnotificationData();
+                                        ClinicPref.getInstance(ActivityPatientDetails.this).setNotificationCount(1);
+                                    }
+                                    textWait.setText("Please, be Ready You are Next...");
+                                    textWait.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                                    textWait.setTextColor(ContextCompat.getColor(ActivityPatientDetails.this, R.color.colorAccent));
+                                } else {
+                                    textWait.setText("Please Wait...!!");
+                                }
                             }
+                        } else {
+                            textWait.setText("Doctor left for today..!");
+                            mCvCountdownViewTest22.setVisibility(View.INVISIBLE);
                         }
                         if (setterAppointmentResponse.getData().getCurrQueueCount() == setterDetailPatient.getCurrQueueCount()) {
                             Intent intent = new Intent(ActivityPatientDetails.this, ActivityScanner.class);
                             startActivity(intent);
                             ClinicPref.getInstance(ActivityPatientDetails.this).setIsScanned(false);
+                            ClinicPref.getInstance(ActivityPatientDetails.this).setTotalServiceCall(0);
+                            customHandler.removeCallbacks(updateTimerThread);
                             isStop = true;
                             serviceCount = 0;
                             isAvgTym = false;
+                            ClinicPref.getInstance(ActivityPatientDetails.this).setNotificationCount(0);
                             finish();
                         }
                         if (setterAppointmentResponse.getData().getCurrQueueCount() > setterDetailPatient.getCurrQueueCount()) {
@@ -283,15 +404,16 @@ public class ActivityPatientDetails extends AppCompatActivity implements View.On
                             Intent intent = new Intent(ActivityPatientDetails.this, ActivityScanner.class);
                             intent.putExtra("APP_OVER", true);
                             startActivity(intent);
+                            customHandler.removeCallbacks(updateTimerThread);
                             ClinicPref.getInstance(ActivityPatientDetails.this).setIsScanned(false);
+                            ClinicPref.getInstance(ActivityPatientDetails.this).setTotalServiceCall(0);
+                            ClinicPref.getInstance(ActivityPatientDetails.this).setNotificationCount(0);
                             isStop = true;
                             serviceCount = 0;
                             finish();
                         }
-
-                        currentCount = setterAppointmentResponse.getData().getCurrQueueCount();
                         isAvgTym = setterAppointmentResponse.getData().getAvgTimeSet();
-
+                        ClinicPref.getInstance(ActivityPatientDetails.this).setPreviousWaitingCount(setterAppointmentResponse.getData().getCurrQueueCount());
                         Log.d("test CHECK", setterAppointmentResponse.getMessage());
                     } else {
                         Log.d("test CHECK", setterAppointmentResponse.getMessage());
@@ -303,10 +425,14 @@ public class ActivityPatientDetails extends AppCompatActivity implements View.On
                     e.printStackTrace();
                 }
             } else {
+                isStop = true;
                 errorlayout.setVisibility(View.VISIBLE);
                 scrollLin.setVisibility(View.GONE);
                 Log.d("test", "null Response, Plz Check...");
+                Toast.makeText(ActivityPatientDetails.this, "Something Goes Wrong.....!", Toast.LENGTH_SHORT).show();
+                //finish();
                 ClinicPref.getInstance(ActivityPatientDetails.this).setIsScanned(false);
+                customHandler.removeCallbacks(updateTimerThread);
             }
         }
     }

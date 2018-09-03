@@ -14,6 +14,9 @@ public class ModelSiteOption {
     private String defaultLogoUrl;
     private String thanksNote;
     private String appOver;
+    private String supportNumber;
+    private String supportEmail;
+    private String mainLogo;
 
     public static ModelSiteOption getInstance() {
         return ourInstance;
@@ -29,6 +32,14 @@ public class ModelSiteOption {
         this.setterGeneralClass = setterGeneralClass;
     }
 
+
+    public String getMainLogo() {
+        return mainLogo;
+    }
+
+    public void setMainLogo(String mainLogo) {
+        this.mainLogo = mainLogo;
+    }
 
     public String getThanksNote() {
         return thanksNote;
@@ -92,5 +103,21 @@ public class ModelSiteOption {
 
     public void setAppOver(String appOver) {
         this.appOver = appOver;
+    }
+
+    public String getSupportNumber() {
+        return supportNumber;
+    }
+
+    public void setSupportNumber(String supportNumber) {
+        this.supportNumber = supportNumber;
+    }
+
+    public String getSupportEmail() {
+        return supportEmail;
+    }
+
+    public void setSupportEmail(String supportEmail) {
+        this.supportEmail = supportEmail;
     }
 }

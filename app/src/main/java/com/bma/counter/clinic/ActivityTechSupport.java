@@ -1,6 +1,5 @@
 package com.bma.counter.clinic;
 
-import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -12,19 +11,19 @@ import com.bma.counter.clinic.appSingletone.ModelSiteOption;
 import com.bma.counter.clinic.fonts.Fonts;
 import com.squareup.picasso.Picasso;
 
-public class ActivityContactDetails extends AppCompatActivity implements View.OnClickListener {
+public class ActivityTechSupport extends AppCompatActivity implements View.OnClickListener {
+
 
     private TextView textEmail;
     private TextView textContact;
     private TextView title;
     private Toolbar toolbar;
-    private ImageView imageHome, imgRefresh, toolbarClose,logoImage;
+    private ImageView imageHome, imgRefresh, toolbarClose, logoImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contact_details);
-
+        setContentView(R.layout.activity_tech_support);
         initView();
     }
 
@@ -44,22 +43,24 @@ public class ActivityContactDetails extends AppCompatActivity implements View.On
         imageHome.setVisibility(View.GONE);
         imgRefresh.setVisibility(View.GONE);
         toolbarClose.setOnClickListener(this);
-
         loadData();
     }
 
     private void loadData() {
 
-        textEmail.setText(ModelSiteOption.getInstance().getEmailId());
-        textContact.setText(ModelSiteOption.getInstance().getMobileNumber());
-        //Picasso.get().load("http://www.malpaniground.com:8080/global/images/logo/"+ModelSiteOption.getInstance().getMainLogo()).into(logoImage);
+        if (ModelSiteOption.getInstance().getSupportEmail() != null) {
+            textEmail.setText(ModelSiteOption.getInstance().getSupportEmail());
+        }
+        if (ModelSiteOption.getInstance().getSupportNumber() != null) {
+            textContact.setText(ModelSiteOption.getInstance().getSupportNumber());
+        }
+      //  Picasso.get().load("http://www.malpaniground.com:8080/global/images/logo/" + ModelSiteOption.getInstance().getMainLogo()).into(logoImage);
         Picasso.get().load(ModelSiteOption.getInstance().getDomainPath()+"/global/images/logo/"+ ModelSiteOption.getInstance().getMainLogo()).into(logoImage);
     }
 
-
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.toolbarClose){
+        if (v.getId() == R.id.toolbarClose) {
             finish();
         }
     }

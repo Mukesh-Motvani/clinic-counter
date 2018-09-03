@@ -20,6 +20,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".notificationUtils.FirebaseInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".notificationUtils.PushNotificationService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".ActivityScanner"
             android:screenOrientation="portrait"
@@ -38,6 +53,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ActivityNoINternet" />
         <activity android:name=".ActivityContactDetails" />
+        <activity android:name=".ActivityTechSupport"></activity>
     </application>
 
 </manifest>

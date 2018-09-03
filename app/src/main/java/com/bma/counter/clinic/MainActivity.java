@@ -36,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.bma.counter.clinic.appSingletone.ModelSiteOption;
 import com.bma.counter.clinic.fonts.Fonts;
 import com.bma.counter.clinic.preference.ClinicPref;
 import com.bma.counter.clinic.service.ThreadGetRequest;
@@ -63,7 +64,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private LinearLayout linearLayout, layoutBtn;
     private ImageView imgLogo;
     private boolean isFromAppointMent = false;
-    boolean doubleBackToExitPressedOnce = false;
+    private boolean doubleBackToExitPressedOnce = false;
+    private NavigationView navigationView;
 
 
     @Override
@@ -89,11 +91,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         changeToolbarFont(toolbar, this);
 
         initViews();
+
+        if(ModelSiteOption.getInstance().getSupportNumber() == null && ModelSiteOption.getInstance().getSupportEmail()== null){
+            hideItem();
+        }
+    }
+
+
+    private void hideItem()
+    {
+        Menu nav_Menu = navigationView.getMenu();
+        nav_Menu.findItem(R.id.nav_technicalSupport).setVisible(false);
     }
 
     public static void changeToolbarFont(Toolbar toolbar, Activity context) {
@@ -142,8 +155,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             button.setVisibility(View.VISIBLE);
         }
 
-        Picasso.get().load("http://www.malpaniground.com:8080/global/images/logo/" + ClinicPref.getInstance(this).getMainLogo()).into(imgLogo);
-        Picasso.get().load("http://www.malpaniground.com:8080/global/images/logo/" + ClinicPref.getInstance(this).getMainLogo()).into(imgLogo);
+        Picasso.get().load(ModelSiteOption.getInstance().getDomainPath()+"/global/images/logo/"+ ModelSiteOption.getInstance().getMainLogo()).into(imgLogo);
+       // Picasso.get().load("http://www.malpaniground.com:8080/global/images/logo/" + ClinicPref.getInstance(this).getMainLogo()).into(imgLogo);
         Sequent.origin(linearLayout).offset(100).anim(this, Animation.FADE_IN_UP).flow(Direction.FORWARD).start();
 
     }
@@ -183,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void tokenSerciceCall(String serviceCall){
-        String url = "http://www.malpaniground.com:8080/api/fetch-appointment-token/" + serviceCall;
+        String url = /*http://www.malpaniground.com:8080/api*/ModelSiteOption.getInstance().getDomainPath()+"/api/fetch-appointment-token/" + serviceCall;
         new ThreadGetRequest(MainActivity.this, new HandlerOfflineSCan(), url).execute();
     }
 
@@ -239,6 +252,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.anv_contact) {
             // Handle the camera action
             startActivity(new Intent(this, ActivityContactDetails.class));
+        }else if(id == R.id.nav_technicalSupport){
+            startActivity(new Intent(this, ActivityTechSupport.class));
         } else {
             showChangeLangDialog();
         }

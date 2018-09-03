@@ -70,7 +70,7 @@ public class MainDetailPojo {
         this.doctorName = doctorName;
     }
 
-    public Integer getCurrQueueCount() {
+    public Integer  getCurrQueueCount() {
         return currQueueCount;
     }
 
