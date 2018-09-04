@@ -53,7 +53,7 @@ public class PushNotificationService extends FirebaseMessagingService {
     private void sendNotification() {
         int icon = R.drawable.ic_stat_name;
         long when = System.currentTimeMillis();
-        String currentDateandTime = new SimpleDateFormat("hh mm a").format(new Date());
+
         Notification notification = new Notification(icon, "Custom Notification", when);
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.custom_notification);

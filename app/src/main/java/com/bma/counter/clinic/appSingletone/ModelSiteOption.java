@@ -17,6 +17,15 @@ public class ModelSiteOption {
     private String supportNumber;
     private String supportEmail;
     private String mainLogo;
+    private String supportNote;
+
+    public String getSupportNote() {
+        return supportNote;
+    }
+
+    public void setSupportNote(String supportNote) {
+        this.supportNote = supportNote;
+    }
 
     public static ModelSiteOption getInstance() {
         return ourInstance;

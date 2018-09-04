@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     tokenSerciceCall(edt.getText().toString());
 
                 } else {
-                    Toast.makeText(MainActivity.this, "Please Enter Appoinment Id.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Please Enter Appointment Id.", Toast.LENGTH_SHORT).show();
                     b.dismiss();
                 }
             }

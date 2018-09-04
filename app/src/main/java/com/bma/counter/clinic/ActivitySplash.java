@@ -96,6 +96,10 @@ public class ActivitySplash extends AppCompatActivity {
                     ModelSiteOption.getInstance().setSupportEmail(setterGeneralClass.getData().get(i).getOptionVal());
                     break;
 
+                case "support_note":
+                    ModelSiteOption.getInstance().setSupportNote(setterGeneralClass.getData().get(i).getOptionVal());
+                    break;
+
             }
 
             if (setterGeneralClass.getData().get(i).getOptionName().equalsIgnoreCase("site_logo")) {

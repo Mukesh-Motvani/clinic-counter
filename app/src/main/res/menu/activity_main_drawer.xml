@@ -5,7 +5,7 @@
 
         <item android:id="@+id/nav_offlineScan"
             android:icon="@drawable/ic_action_name"
-            android:title="offline scan"></item>
+            android:title="Insert Appointment Id"></item>
 
         <item android:id="@+id/anv_contact"
             android:icon="@drawable/ic_action_name"

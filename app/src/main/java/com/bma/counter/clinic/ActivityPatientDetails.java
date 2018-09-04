@@ -187,6 +187,11 @@ public class ActivityPatientDetails extends AppCompatActivity implements View.On
         Fonts.getInstance().setTextViewFont(textWait, Fonts.MUSEO_1);
         Fonts.getInstance().setTextViewFont(title, Fonts.MUSEO_1);
 
+
+
+        if(ModelSiteOption.getInstance().getSupportNote() != null && !ModelSiteOption.getInstance().getSupportNote().isEmpty()){
+            txtNote.setText(ModelSiteOption.getInstance().getSupportNote());
+        }
         // Fonts.getInstance().setButtonFont(btnHome,Fonts.MUSEO);
 
         // long time22 = (long) 60 * 1000;
